@@ -1,14 +1,26 @@
 // src/routes/index.js
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const itemRoutes = require("./itemRoutes");
+const serverRoutes = require('./serverRoutes');
+const monitorRoutes = require('./monitorRoutes');
+// const authRoutes = require('./authRoutes');
+const { authenticateJWT } = require('../middleware/authMiddleware');
 
-// Welcome route
-router.get("/", (req, res) => {
-  res.json({ message: "Welcome to Express SQLite API" });
+// Public routes
+// router.use('/auth', authRoutes);
+router.use('/servers', serverRoutes);
+router.use('/monitor', monitorRoutes);
+
+// Protected routes
+// router.use('/servers', authenticateJWT, serverRoutes);
+// router.use('/monitor', authenticateJWT, monitorRoutes);
+
+// Root route
+router.get('/', (req, res) => {
+  res.json({ 
+    message: 'Server Monitor API',
+    version: '1.0.0'
+  });
 });
-
-// Mount item routes
-router.use("/items", itemRoutes);
 
 module.exports = router;
